@@ -1,13 +1,18 @@
-const changeDesc = function(state = null, action){
-    switch(action.type){
-        case "CHANGE_DESC" : 
-            console.log("I'm in change description reducer")
-            console.log(action.payload)
+const feedbackUpdated = function(state = null, action){
+    switch (action.type) {
+        case "TITLE_UPDATED":
+            console.log("I am in update title reducer");
+            console.log(action.payload);
             return action.payload
             //break;
-        default : 
+    
+        default:
             break;
     }
+
     return state
+
+
 }
-export default changeDesc;
+
+export default feedbackUpdated

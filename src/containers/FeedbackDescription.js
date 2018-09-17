@@ -1,18 +1,28 @@
 import React from 'react';
 import { connect } from "react-redux";
+import {bindActionCreators} from 'redux';
+
+import updateTitle  from '../actions/updateTitleAction';
 
 class FeedbackDescription extends React.Component {
 
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state={
-            changeValue : {}
+            updatedFB : {}
         }
-
+        this.updateTitleInContainer = this.updateTitleInContainer.bind(this)
+        this.dispatchNewTitle = this.dispatchNewTitle.bind(this)
     }
     
-    onSubmitChangeDescription(){
+    dispatchNewTitle(){
+        this.props.updatedTitle(this.state.updatedFB)
+    }
 
+    updateTitleInContainer(e){
+        const temp_updateFB = Object.assign({},this.props.selectedFBprops,{title:e.target.value})
+        this.setState({updatedFB:temp_updateFB})
+        console.log(this.state.updatedFB)
     }
 
     render() { 
@@ -32,21 +42,28 @@ class FeedbackDescription extends React.Component {
                 </ul>
                 <div><img src={this.props.selectedFBprops.imageUrl} alt="icons"/></div>
                 Change Description Below :
-                <form onSubmit={this.onSubmitChangeDescription}>
-                    <input type="text" placeholder="Enter data" />
-                    <input type="submit" value="Change Descrition" />
+                
+                <form onSubmit={this.dispatchNewTitle}>
+                        Update title:
+                        <input type="text"
+                               value={this.state.updatedFB.title} 
+                               onChange={this.updateTitleInContainer}
+                        />
+                        <button type="submit">Update Title</button>
                 </form>
             </div>
          );
     }
 }
 
-function connectStoreToComponentAsProps(state) {
-    return {
+function connectStateToComponentAsProps(state) {
+    return ({
         selectedFBprops:state.oneFB
-        }
+        })
     }
 
+function connectActionToComponentAsProps(dispatch){
+    return bindActionCreators({updateTitle: updateTitle}, dispatch)
+}
 
-
-export default connect(connectStoreToComponentAsProps)(FeedbackDescription);
+export default connect(connectStateToComponentAsProps, connectActionToComponentAsProps)(FeedbackDescription);
